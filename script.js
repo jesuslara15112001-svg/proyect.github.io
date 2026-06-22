@@ -1,47 +1,125 @@
-const VALID_USER = "Jesus_Lara";
+ const VALID_USER = "Jesus_Lara";
 const VALID_CEDULA = "31079893";
 
 const TIMELINE_DATABASE = [
-    { "id": 1, "fecha": "Mayo", "evento": "Siembra Mecanizada", "desc": "Inicio del poblamiento con semilla certificada de maíz amarillo una vez consolidado el ciclo regular de lluvias invernales en el municipio." },
-    { "id": 2, "fecha": "Junio", "evento": "Monitoreo Fitosanitario", "desc": "Labores y aplicaciones de campo orientadas al control contra malezas e insectos competidores para proteger las plántulas." },
-    { "id": 3, "fecha": "Julio", "evento": "Fertilización de Rebono", "desc": "Incorporación complementaria de nitrógeno (urea) para potenciar la aceleración y el sano desarrollo foliar y radicular." },
-    { "id": 4, "fecha": "Agosto", "evento": "Evaluación del Llenado", "desc": "Inspecciones técnicas de las mazorcas para verificar la compactación uniforme y el correcto crecimiento de los granos." },
-    { "id": 5, "fecha": "Septiembre", "evento": "Cosecha y Acopio", "desc": "Entrada de cosechadoras combinadas cuando el grano reduce su porcentaje de humedad al nivel óptimo exigido por los silos regionales." }
+    { 
+        "id": 1, 
+        "fecha": "Mayo", 
+        "evento": "Siembra Mecanizada", 
+        "desc": "Inicio del poblamiento con semilla certificada de maíz amarillo una vez consolidado el ciclo regular de lluvias invernales en el municipio.",
+        "imagen": "imagenes/mayo_siembra.jpg"
+    },
+    { 
+        "id": 2, 
+        "fecha": "Junio", 
+        "evento": "Monitoreo Fitosanitario", 
+        "desc": "Labores y aplicaciones de campo orientadas al control contra malezas e insectos competidores para proteger las plántulas.",
+        "imagen": "imagenes/junio_monitoreo.jpg"
+    },
+    { 
+        "id": 3, 
+        "fecha": "Julio", 
+        "evento": "Fertilización de Rebono", 
+        "desc": "Incorporación complementaria de nitrógeno (urea) para potenciar la aceleración y el sano desarrollo foliar y radicular.",
+        "imagen": "imagenes/julio_fertilizacion.jpg"
+    },
+    { 
+        "id": 4, 
+        "fecha": "Agosto", 
+        "evento": "Evaluación del Llenado", 
+        "desc": "Inspecciones técnicas de las mazorcas para verificar la compactación uniforme y el correcto crecimiento de los granos.",
+        "imagen": "imagenes/socorro_maiz.jpg"
+    },
+    { 
+        "id": 5, 
+        "fecha": "Septiembre", 
+        "evento": "Cosecha y Acopio", 
+        "desc": "Entrada de cosechadoras combinadas cuando el grano reduce su porcentaje de humedad al nivel óptimo exigido por los silos regionales.",
+        "imagen": "imagenes/septiembre_cosecha.jpg"
+    }
 ];
+
+function loginSubmit(event) {
+    event.preventDefault();
+    const userInput = document.getElementById("login-user").value.trim();
+    const cedulaInput = document.getElementById("login-cedula").value.trim();
+
+    if (userInput === VALID_USER && cedulaInput === VALID_CEDULA) {
+        // Redirecciona agregando las credenciales correctas a la URL
+        window.location.search = `?page=inicio&nombre=${VALID_USER}&cedula=${VALID_CEDULA}`;
+    } else {
+        const errorMsg = document.getElementById("login-error-msg");
+        errorMsg.style.display = "block";
+        errorMsg.innerText = "Usuario o Cédula incorrectos. Intente de nuevo.";
+    }
+}
 
 function appRouter() {
     const urlParams = new URLSearchParams(window.location.search);
-    const page = urlParams.get('page') || 'inicio';
+    const page = urlParams.get('page') || 'login';
     const nombre = urlParams.get('nombre');
     const cedula = urlParams.get('cedula');
     
     const viewport = document.getElementById("app-viewport");
+    const header = document.getElementById("app-header");
 
-    document.querySelectorAll('#main-nav a').forEach(link => link.classList.remove('active'));
-
+    // Si no hay credenciales válidas en la URL, forzar la pantalla de Login
     if (nombre !== VALID_USER || cedula !== VALID_CEDULA) {
+        header.style.display = "none";
         viewport.innerHTML = `
-            <div class="status-box error">
-                <h3>Acceso Denegado: Credenciales Incorrectas</h3>
-                <p>El sistema detectó parámetros de autenticación inválidos o ausentes en la URL.</p>
-                <small>Por favor, utilice los botones del menú de navegación superior para acceder con las credenciales correctas.</small>
-            </div>`;
+            <div class="login-wrapper">
+                <div class="login-card">
+                    <div class="login-header">
+                        <h2>SISTEMA CEREALERO</h2>
+                        <p>Municipio El Socorro - Guárico</p>
+                    </div>
+                    <form id="login-form">
+                        <div class="form-group">
+                            <label>Usuario Técnico</label>
+                            <input type="text" id="login-user" placeholder="Ej. Jesus_Lara" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Cédula de Identidad</label>
+                            <input type="password" id="login-cedula" placeholder="Ingrese su cédula" required>
+                        </div>
+                        <div id="login-error-msg" class="login-error" style="display: none;"></div>
+                        <button type="submit" class="btn-submit btn-block">Ingresar al Sistema</button>
+                    </form>
+                </div>
+            </div>
+        `;
+        document.getElementById("login-form").addEventListener("submit", loginSubmit);
         return;
     }
+
+    // Si las credenciales son correctas, mostramos el menú de navegación
+    header.style.display = "block";
+    document.querySelectorAll('#main-nav a').forEach(link => link.classList.remove('active'));
 
     switch(page) {
         case 'inicio':
             document.getElementById('nav-inicio').classList.add('active');
             viewport.innerHTML = `
-                <div class="hero-section">
-                    <h1>Municipio El Socorro: Corazón del Maíz</h1>
-                    <p>Planificación y Monitoreo Técnico Cerealero en el Estado Guárico</p>
+                <div class="hero-section video-hero">
+                    <video autoplay muted loop playsinline class="hero-video-bg">
+                        <source src="imagenes/socorro_campo.mp4" type="video/mp4">
+                        Tu navegador no soporta el formato de video.
+                    </video>
+                    <div class="hero-overlay-content">
+                        <h1>Municipio El Socorro: Corazón del Maíz</h1>
+                        <p>Planificación y Monitoreo Técnico Cerealero en el Estado Guárico</p>
+                    </div>
                 </div>
                 
+                <div class="content-card header-with-img">
+                    <img src="imagenes/socorro_maiz.jpg" alt="Campos de Maíz en El Socorro" class="main-project-img" onerror="this.style.display='none'">
+                    <div class="header-text">
+                        <h2>Importancia Socioeconómica de la Producción</h2>
+                        <p>En el ámbito del Municipio El Socorro, la siembra y cosecha de maíz trasciende el marco de una labor agrícola común; representa el motor primordial que dinamiza el flujo financiero, laboral y cultural de toda la región llanera.</p>
+                    </div>
+                </div>
+
                 <div class="content-card">
-                    <h2>Importancia Socioeconómica de la Producción</h2>
-                    <p>En el ámbito del Municipio El Socorro, la siembra y cosecha de maíz trasciende el marco de una labor agrícola común; representa el motor primordial que dinamiza el flujo financiero, laboral y cultural de toda la región llanera.</p>
-                    
                     <div class="grid-features">
                         <div class="feature-item">
                             <h4>Seguridad Alimentaria</h4>
@@ -71,6 +149,7 @@ function appRouter() {
                 htmlTimeline += `
                     <div class="timeline-container ${sideClass}">
                         <div class="timeline-box">
+                            <img src="${item.imagen}" alt="${item.evento}" class="timeline-img" onerror="this.style.display='none'">
                             <div class="timeline-date">${item.fecha}</div>
                             <h4 class="timeline-title">${item.evento}</h4>
                             <p class="timeline-desc">${item.desc}</p>

@@ -3,25 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>4.- Layout timeline - Municipio El Socorro</title>
+    <title>Layout Timeline - Municipio El Socorro</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <header id="app-header" style="display: none;">
-        <div class="nav-container">
-            <nav id="main-nav">
-                <a href="?page=inicio&nombre=Jesus_Lara&cedula=31079893" id="nav-inicio">Inicio</a>
-                <a href="?page=explorar&nombre=Jesus_Lara&cedula=31079893" id="nav-explorar">Explorar</a>
-                <a href="?page=bitacora&nombre=Jesus_Lara&cedula=31079893" id="nav-bitacora">Mi Bitácora</a>
-                <a href="?page=proyecto&nombre=Jesus_Lara&cedula=31079893" id="nav-proyecto">Sobre el Proyecto</a>
-                <a href="?page=contacto&nombre=Jesus_Lara&cedula=31079893" id="nav-contacto">Contacto</a>
-            </nav>
+    <div id="login-container" class="login-overlay">
+        <div class="login-card">
+            <div class="login-logo">🌽</div>
+            <h2>SISTEMA CEREALERO</h2>
+            <p class="subtitle">Municipio El Socorro - Guárico</p>
+            
+            <form id="login-form">
+                <div class="form-group">
+                    <label>Usuario Técnico</label>
+                    <input type="text" id="username" placeholder="Ej. Jesus_Lara" required autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label>Cédula de Identidad</label>
+                    <input type="password" id="cedula" placeholder="Ingrese su Cédula" required>
+                </div>
+                <button type="submit" class="btn-login">Ingresar al Sistema</button>
+                <p id="login-error" class="error-msg"></p>
+            </form>
         </div>
-    </header>
+    </div>
 
-    <div class="main-container">
-        <div id="app-viewport"></div>
+    <div id="app-container" class="hidden">
+        <header>
+            <h1>Control Agrícola - El Socorro</h1>
+            <nav>
+                <button class="nav-btn active" data-target="inicio">Inicio</button>
+                <button class="nav-btn" data-target="explorar">Explorar</button>
+                <button class="nav-btn" data-target="contacto">Contacto</button>
+                <button id="btn-logout" class="logout-btn">Salir</button>
+            </nav>
+        </header>
+
+        <main>
+            <section id="view-inicio" class="content-view">
+                <h2>Bienvenidos al Sistema Operacional del Maíz</h2>
+                <p>Esta aplicación permite hacer un seguimiento cronológico de las principales actividades del ciclo del maíz en los llanos de El Socorro, Estado Guárico.</p>
+                <div class="main-image">
+                    <img src="imagen/inicio.jpg" alt="Maizal">
+                </div>
+            </section>
+
+            <section id="view-explorar" class="content-view hidden">
+                <h2>Línea de Tiempo del Ciclo del Maíz</h2>
+                <div id="timeline-container">
+                    </div>
+            </section>
+
+            <section id="view-contacto" class="content-view hidden">
+                <div class="contact-box">
+                    <h3>Ficha del Desarrollador</h3>
+                    <p><strong>Proyecto:</strong> Layout Timeline</p>
+                    <p><strong>Estudiante:</strong> Jesus Antonio Lara Navarro</p>
+                    <p><strong>Cédula:</strong> 31079893</p>
+                    <p><strong>Carrera:</strong> Ingeniería de Sistemas (7mo Semestre)</p>
+                    <p><strong>Institución:</strong> UNEFA</p>
+                </div>
+            </section>
+        </main>
     </div>
 
     <script src="script.js"></script>
